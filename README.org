@@ -1,0 +1,4 @@
+/A nice picture go here/
+
+* What's this?
+Is my attempt for something better than =appt-mode= with extra tools to manage your agenda with org-mode
