@@ -25,6 +25,21 @@
 
 ;; secretaria.el is the main file of the project
 
+;;; Prayer:
+
+;; Domine Iesu Christe, Fili Dei, miserere mei, peccatoris
+;; Κύριε Ἰησοῦ Χριστέ, Υἱὲ τοῦ Θεοῦ, ἐλέησόν με τὸν ἁμαρτωλόν.
+;; אדון ישוע משיח, בנו של אלוהים, רחם עליי, החוטא.
+;; Nkosi Jesu Kristu, iNdodana kaNkulunkulu, ngihawukele mina, isoni.
+;; Señor Jesucristo, Hijo de Dios, ten misericordia de mí, pecador.
+;; Herr Jesus Christus, Sohn Gottes, hab Erbarmen mit mir Sünder.
+;; Господи, Иисусе Христе, Сыне Божий, помилуй мя грешного/грешную.
+;; Sinjoro Jesuo Kristo, Difilo, kompatu min pekulon.
+;; Tuhan Yesus Kristus, Putera Allah, kasihanilah aku, seorang pendosa.
+;; Bwana Yesu Kristo, Mwana wa Mungu, unihurumie mimi mtenda dhambi.
+;; Doamne Iisuse Hristoase, Fiul lui Dumnezeu, miluiește-mă pe mine, păcătosul.
+;; 主耶穌基督，上帝之子，憐憫我罪人。
+
 ;;; Code:
 
 (require 'secretaria-clock)
