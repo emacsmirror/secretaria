@@ -91,9 +91,7 @@
 (add-hook 'org-clock-out-hook 'secretaria/task-clocked-out t)
 (add-hook 'org-clock-cancel-hook 'secretaria/task-clocked-canceled t)
 
-(if (not org-show-notification-handler)
-    (setf org-show-notification-handler 'secretaria/notification-handler)
-  (when secretaria/notification-handler-overwrite
-      (setf org-show-notification-handler 'secretaria/notification-handler)))
+(when secretaria/notification-handler-overwrite
+  (setf org-show-notification-handler 'secretaria/notification-handler))
 
 (provide 'secretaria-clock)
