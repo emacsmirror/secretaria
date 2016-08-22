@@ -104,6 +104,20 @@
   (when org-clock-current-task
     (alert (format "%s" org-clock-current-task) :title (format "Task canceled! (%s)" (secretaria/task-clocked-time)) :severity 'high :mode 'org-mode :style secretaria/style-best-available)))
 
+(defun secretaria/task-save-clocked-task ()
+  "Save into a file the current clocked task"
+  (when org-clock-current-task
+    (with-temp-file (expand-file-name "~/.secretaria-clocked-task")
+      (insert org-clock-current-task))))
+
+(defun secretaria/task--delete-save-clocked-task ()
+  "Delete the saved clocked task"
+  (ignore-errors (delete-file "~/.secretaria-clocked-task")))
+
+(defun secretaria/task--saved-clocked-task-p ()
+  "Check if the current clocked task was saved"
+  (file-exists-p "~/.secretaria-clocked-task"))
+
 (add-hook 'org-clock-in-hook 'secretaria/task-clocked-in t)
 (add-hook 'org-clock-out-hook 'secretaria/task-clocked-out t)
 (add-hook 'org-clock-cancel-hook 'secretaria/task-clocked-canceled t)
