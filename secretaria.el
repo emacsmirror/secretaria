@@ -42,6 +42,7 @@
 
 ;;; Code:
 
+(require 'secretaria-appt)
 (require 'secretaria-clock)
 
 (provide 'secretaria)

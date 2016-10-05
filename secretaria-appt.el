@@ -48,15 +48,28 @@
   "Return t if FILENAME-DIRECTORY is in `org-agenda-files'"
   (when (not (eq filename-directory nil))
     (if (listp org-agenda-files)
-        ;; do something when file names are stored inside another file
-        (or (member filename-directory org-agenda-files)
+        (or (member filename-directory (org-agenda-files))
            (file-in-directory-p (file-name-nondirectory filename-directory) org-directory)))))
+
+(defun secretaria/due-appt ()
+  "Tell the user about due TODOs tasks"
+  (let* ((files (org-agenda-files))
+         (due-todos 0)
+         (due-older 0)
+         (today (calendar-current-date)))
+    (dolist (file files)
+      (let* ((entries (org-agenda-get-day-entries file today :scheduled :deadline)))
+        (dolist (entry entries)
+          ;; Get how many times the task was re-scheduled, and count it
+          )))))
 
 (defun secretaria/update-appt ()
   "Update appointments if the saved file is part of the agendas files"
   (interactive)
   (when (eq major-mode 'org-mode)
-    ;; (file-name-directory (buffer-file-name))
     (when (secretaria/org-file-agenda-p buffer-file-name)
-      ;; TODO: do something interesting
-      (message "File %s is an org-mode agenda file!" buffer-file-name))))
+      (org-agenda-to-appt t))))
+
+(add-hook 'after-save-hook #'secretaria/update-appt)
+
+(provide 'secretaria-appt)
