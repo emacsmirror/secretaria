@@ -90,25 +90,33 @@
 (defun secretaria/task-clocked-in ()
   "Start a timer when a task is clocked-in"
   (setf secretaria/remind--timer (run-at-time (format "%s min" secretaria/remind-every-minutes) (* secretaria/remind-every-minutes 60) 'secretaria/remind-task-clocked-in))
-  (alert (format "%s" org-clock-current-task) :title (format "Task clocked in! (%s)" (secretaria/task-clocked-time)) :severity 'high :mode 'org-mode :style secretaria/style-best-available))
+  (alert (format "%s" org-clock-current-task) :title (format "Task clocked in! (%s)" (secretaria/task-clocked-time)) :mode 'org-mode :style secretaria/style-best-available))
 
 (defun secretaria/task-clocked-out ()
   "Stop reminding the clocked-in task"
   (ignore-errors (cancel-timer secretaria/remind--timer))
   (when org-clock-current-task
-    (alert (format "%s" org-clock-current-task) :title (format "Task clocked out! (%s)" (secretaria/task-clocked-time)) :severity 'high :mode 'org-mode :style secretaria/style-best-available)))
+    (alert org-clock-current-task :title (format "Task clocked out! (%s)" (secretaria/task-clocked-time)) :severity 'high :mode 'org-mode :style secretaria/style-best-available)))
 
 (defun secretaria/task-clocked-canceled ()
-  "Stop reminding the clocked-in task if it canceled"
+  "Stop reminding the clocked-in task if it's canceled"
   (cancel-timer secretaria/remind--timer)
   (when org-clock-current-task
-    (alert (format "%s" org-clock-current-task) :title (format "Task canceled! (%s)" (secretaria/task-clocked-time)) :severity 'high :mode 'org-mode :style secretaria/style-best-available)))
+    (alert org-clock-current-task :title (format "Task canceled! (%s)" (secretaria/task-clocked-time)) :severity 'high :mode 'org-mode :style secretaria/style-best-available)))
 
 (defun secretaria/task-save-clocked-task ()
   "Save into a file the current clocked task"
   (when org-clock-current-task
     (with-temp-file (expand-file-name "~/.secretaria-clocked-task")
       (insert org-clock-current-task))))
+
+(defun secretaria/task-load-clocked-task ()
+  "Load the clocked task, if any. And tell the user about it."
+  (with-temp-buffer
+    (insert-file-contents "~/.secretaria-clocked-task")
+    (when (not (string-empty-p (buffer-string)))
+      (alert (format "Something went wrong with Emacs while this task was clocked: <b>%s</b>" (buffer-string)) :title "Oops! Don't forget you were doing something, boss!" :severity 'high)
+      (secretaria/task--delete-save-clocked-task))))
 
 (defun secretaria/task--delete-save-clocked-task ()
   "Delete the saved clocked task"
@@ -118,9 +126,10 @@
   "Check if the current clocked task was saved"
   (file-exists-p "~/.secretaria-clocked-task"))
 
-(add-hook 'org-clock-in-hook 'secretaria/task-clocked-in t)
-(add-hook 'org-clock-out-hook 'secretaria/task-clocked-out t)
-(add-hook 'org-clock-cancel-hook 'secretaria/task-clocked-canceled t)
+(add-hook 'org-clock-in-hook #'secretaria/task-clocked-in t)
+(add-hook 'org-clock-out-hook #'secretaria/task-clocked-out t)
+(add-hook 'org-clock-cancel-hook #'secretaria/task-clocked-canceled t)
+(add-hook 'after-init-hook #'secretaria/task-load-clocked-task)
 
 (when secretaria/notification-handler-overwrite
   (setf org-show-notification-handler 'secretaria/notification-handler))

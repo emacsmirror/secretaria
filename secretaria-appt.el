@@ -55,13 +55,20 @@
   "Tell the user about due TODOs tasks"
   (let* ((files (org-agenda-files))
          (due-todos 0)
-         (due-older 0)
          (today (calendar-current-date)))
     (dolist (file files)
-      (let* ((entries (org-agenda-get-day-entries file today :scheduled :deadline)))
+      (let* ((entries (org-agenda-get-day-entries file today :scheduled :deadline))
+             (older ""))
         (dolist (entry entries)
           ;; Get how many times the task was re-scheduled, and count it
-          )))))
+          (when (string-match-p "[0-9]+" (get-text-property 0 'extra entry))
+            (setf due-todos (1+ due-todos))))))
+    (when (> due-todos 0)
+      (alert (format "You have <b>%d due task%s</b>! please check org-agenda." due-todos (if (>= due-todos 2) "s" ""))
+             :title "I need your attention urgently, boss!"
+             :severity 'high
+             :style secretaria/style-best-available
+             :mode 'org-mode))))
 
 (defun secretaria/update-appt ()
   "Update appointments if the saved file is part of the agendas files"
@@ -71,5 +78,6 @@
       (org-agenda-to-appt t))))
 
 (add-hook 'after-save-hook #'secretaria/update-appt)
+(add-hook 'after-init-hook #'secretaria/due-appt)
 
 (provide 'secretaria-appt)

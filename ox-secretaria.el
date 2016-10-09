@@ -43,5 +43,6 @@
 ;;; Code:
 (require 'ox)
 
+;; TODO: try to recall the purpose of this exporter.
 ;; see http://orgmode.org/worg/dev/org-export-reference.html
 (org-export-define-backend 'ox-secretaria)
