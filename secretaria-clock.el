@@ -112,11 +112,12 @@
 
 (defun secretaria/task-load-clocked-task ()
   "Load the clocked task, if any. And tell the user about it."
-  (with-temp-buffer
-    (insert-file-contents "~/.secretaria-clocked-task")
-    (when (not (string-empty-p (buffer-string)))
-      (alert (format "Something went wrong with Emacs while this task was clocked: <b>%s</b>" (buffer-string)) :title "Oops! Don't forget you were doing something, boss!" :severity 'high)
-      (secretaria/task--delete-save-clocked-task))))
+  (if (file-exists-p "~/.secretaria-clocked-task")
+      (with-temp-buffer
+        (insert-file-contents "~/.secretaria-clocked-task")
+        (when (not (string-empty-p (buffer-string)))
+          (alert (format "Something went wrong with Emacs while this task was clocked: <b>%s</b>" (buffer-string)) :title "Oops! Don't forget you were doing something, boss!" :severity 'high)
+          (secretaria/task--delete-save-clocked-task)))))
 
 (defun secretaria/task--delete-save-clocked-task ()
   "Delete the saved clocked task"
