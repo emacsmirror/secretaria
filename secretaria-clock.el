@@ -56,7 +56,7 @@
 
 (defcustom secretaria/remind-every-minutes 10 "How many minutes remind the user of the task clocked in" :type 'integer)
 (defcustom secretaria/style-best-available (secretaria/style--get-best-available) "Use the best notification style available for the current operating system" :type 'symbol)
-(defcustom secretaria/notification-handler-overwrite t "Tells Secretaria we want to use her function in for notification with `org-show-notification-handler'" :type 'bool)
+(defcustom secretaria/notification-handler-overwrite t "Tells Secretaria we want to use her notification function with `org-show-notification-handler'" :type 'bool)
 
 (defun secretaria/task-clocked-time ()
   "Return a string with the clocked time and effort, if any"
@@ -89,11 +89,13 @@
 
 (defun secretaria/task-clocked-in ()
   "Start a timer when a task is clocked-in"
+  (secretaria/task-save-clocked-task)
   (setf secretaria/remind--timer (run-at-time (format "%s min" secretaria/remind-every-minutes) (* secretaria/remind-every-minutes 60) 'secretaria/remind-task-clocked-in))
   (alert (format "%s" org-clock-current-task) :title (format "Task clocked in! (%s)" (secretaria/task-clocked-time)) :mode 'org-mode :style secretaria/style-best-available))
 
 (defun secretaria/task-clocked-out ()
   "Stop reminding the clocked-in task"
+  (secretaria/task--delete-save-clocked-task)
   (ignore-errors (cancel-timer secretaria/remind--timer))
   (when org-clock-current-task
     (alert org-clock-current-task :title (format "Task clocked out! (%s)" (secretaria/task-clocked-time)) :severity 'high :mode 'org-mode :style secretaria/style-best-available)))
