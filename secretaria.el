@@ -1,10 +1,11 @@
-;;; secretaria.el --- My attempt of an assistant for you in org-mode
+;;; secretaria.el --- An attempt of an assistant for you in org-mode
 
 ;; Copyright (C) 2016 Jorge Araya Navarro
 
 ;; Author: Jorge Araya Navarro <elcorreo@deshackra.com>
 ;; Keywords: org, convenience
-;; Package-Requires: ((emacs "24.1") (org "8.3") (alert "1.2") (s "1.11.0") (f "0.19.0"))
+;; Package-Requires: ((emacs "24.4") (org "8.3") (alert "1.2") (s "1.11.0") (f "0.19.0"))
+;; Package-Version: 0.2
 ;; Homepage: https://bitbucket.org/shackra/secretaria.el
 
 ;; This file is not part of GNU Emacs.
@@ -47,3 +48,4 @@
 (require 'secretaria-clock)
 
 (provide 'secretaria)
+;;; secretaria.el ends here

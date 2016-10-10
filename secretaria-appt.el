@@ -46,10 +46,11 @@
 (require 'org)
 (require 'org-agenda)
 
-(defcustom secretaria/today-unknown-time-appt-remind-every 30 "Minutes before firing a reminder about tasks for today with no specified time of the day" :type 'interger)
+(defcustom secretaria-today-unknown-time-appt-remind-every 30 "Minutes before firing a reminder about tasks for today with no specified time of the day." :type 'interger)
 
-(defun secretaria/leaders--prepare (fortodaytasks)
-  "Return a regexp for due org-agenda leaders.
+(defun secretaria--leaders-prepare (fortodaytasks)
+  "Return a regexp for due `org-agenda' leaders.
+
 If `FORTODAYTASKS' is non-nil, return a regexp string that will
 match tasks scheduled or with a deadline for today"
   (let* ((leaders (append org-agenda-deadline-leaders org-agenda-scheduled-leaders))
@@ -64,25 +65,25 @@ match tasks scheduled or with a deadline for today"
           (push (replace-regexp-in-string "%[0-9]?d" "[0-9]+" leader) regexpleaders))))
     (mapconcat 'identity regexpleaders "\\|")))
 
-(defun secretaria/conditional--severity ()
-  "Depending if Emacs is ran as daemon or not, return a severity level for Alert"
+(defun secretaria--conditional-severity ()
+  "Return a severity level for Alert if Emacs is ran as a daemon."
   (if (daemonp)
       'high
     'normal))
 
-(defun secretaria/org-file-agenda-p (filename-directory)
-  "Return t if FILENAME-DIRECTORY is in `org-agenda-files'"
+(defun secretaria-org-file-agenda-p (filename-directory)
+  "Return t if FILENAME-DIRECTORY is in `org-agenda-files'."
   (when (not (eq filename-directory nil))
     (if (listp org-agenda-files)
         (or (member filename-directory (org-agenda-files))
            (file-in-directory-p (file-name-nondirectory filename-directory) org-directory)))))
 
-(defun secretaria/due-appt ()
-  "Tell the user about due TODOs tasks"
+(defun secretaria-due-appt ()
+  "Tell the user about due TODOs tasks."
   (let* ((files (org-agenda-files))
          (due-todos 0)
          (today (calendar-current-date))
-         (due-regexp (secretaria/leaders--prepare nil)))
+         (due-regexp (secretaria--leaders-prepare nil)))
     (dolist (file files)
       (let* ((entries (org-agenda-get-day-entries file today :scheduled :deadline)))
         (dolist (entry entries)
@@ -93,15 +94,16 @@ match tasks scheduled or with a deadline for today"
       (alert (format "You have <b>%d due task%s</b>! please check org-agenda." due-todos (if (>= due-todos 2) "s" ""))
              :title "I need your attention urgently, boss!"
              :severity 'high
-             :style secretaria/style-best-available
+             :style secretaria-style-best-available
              :mode 'org-mode))))
 
-(defun secretaria/today-unknown-time-appt ()
+(defun secretaria-today-unknown-time-appt ()
   "Tell the user about tasks scheduled for today.
-Those scheduled tasks for today have no time of the day specified"
+
+Those tasks for today have no time of the day specified"
   (let* ((files (org-agenda-files))
          (today (calendar-current-date))
-         (today-regexp (secretaria/leaders--prepare t)))
+         (today-regexp (secretaria--leaders-prepare t)))
     (dolist (file files)
       (let* ((entries (org-agenda-get-day-entries file today :scheduled :deadline)))
         (dolist (entry entries)
@@ -109,27 +111,30 @@ Those scheduled tasks for today have no time of the day specified"
                  (string-empty-p (get-text-property 0 'time entry)))
               (alert (format "%s" (get-text-property 0 'txt entry))
                      :title "Task for today with an unknown time of day"
-                     :severity (secretaria/conditional--severity)
-                     :style secretaria/style-best-available
+                     :severity (secretaria--conditional-severity)
+                     :style secretaria-style-best-available
                      :mode 'org-mode)))))))
 
-(defun secretaria/update-appt ()
-  "Update appointments if the saved file is part of the agendas files"
+(defun secretaria-update-appt ()
+  "Update appointments if the saved file is part of `org-agenda-files'."
   (interactive)
   (when (eq major-mode 'org-mode)
-    (when (secretaria/org-file-agenda-p buffer-file-name)
+    (when (secretaria-org-file-agenda-p buffer-file-name)
       (org-agenda-to-appt t))))
 
-(defun secretaria/today-unknown-time-appt-always-remind-me ()
-  "Prepare a timer for firing reminders of tasks for today, with an unknown time of the day.
-If the variable `secretaria/today-unknown-time-appt-remind-every' is 0, use the default
-of 30 minutes (to avoid accidents made by the user)."
-  (setf secretaria/today-uknown-time-reminder-timer
-        (run-at-time (format "%s min" (or secretaria/today-unknown-time-appt-remind-every 30))
-                     (* (or secretaria/today-unknown-time-appt-remind-every 30) 60) 'secretaria/today-unknown-time-appt)))
+(defun secretaria-today-unknown-time-appt-always-remind-me ()
+  "Timer for reminders of today tasks which have an unknown time of the day.
 
-(add-hook 'after-init-hook #'secretaria/today-unknown-time-appt)
-(add-hook 'after-save-hook #'secretaria/update-appt)
-(add-hook 'after-init-hook #'secretaria/due-appt)
+If the variable `secretaria-today-unknown-time-appt-remind-every'
+is 0, use the default of 30 minutes (to avoid accidents made by
+the user)."
+  (setf secretaria-today-uknown-time-reminder-timer
+        (run-at-time (format "%s min" (or secretaria-today-unknown-time-appt-remind-every 30))
+                     (* (or secretaria-today-unknown-time-appt-remind-every 30) 60) 'secretaria-today-unknown-time-appt)))
+
+(add-hook 'after-init-hook #'secretaria-today-unknown-time-appt)
+(add-hook 'after-save-hook #'secretaria-update-appt)
+(add-hook 'after-init-hook #'secretaria-due-appt)
 
 (provide 'secretaria-appt)
+;;; secretaria-appt.el ends here
