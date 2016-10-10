@@ -19,7 +19,7 @@ utilities that enhance your experience with org-mode.
 This package should be available in Melpa, if you use `use-package`,
 throw this code snippet in your Emacs configuration.
 
-``` commonlisp rundoc-block
+```
 (use-package secretaria
   :config
   ;; use this for getting a reminder every 30 minutes of those tasks scheduled
