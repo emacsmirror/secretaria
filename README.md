@@ -1,4 +1,4 @@
-<http://i.imgur.com/NginR7g.png>
+![A pretty and busy office lady](http://i.imgur.com/NginR7g.png)
 
 # What's this?
 
