@@ -45,6 +45,8 @@
 (require 'f)
 (require 'org)
 (require 'org-agenda)
+(require 'subr-x)
+(require 'alert)
 
 (defcustom secretaria-today-unknown-time-appt-remind-every 30
   "Minutes before firing a reminder about tasks for today with no specified time of the day."

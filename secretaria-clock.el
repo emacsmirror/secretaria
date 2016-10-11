@@ -46,6 +46,8 @@
 (require 'org)
 (require 'alert)
 (require 's)
+(require 'org-clock)
+(require 'subr-x)
 
 (defun secretaria--style-get-best-available ()
   "Return the best style available for the current system."
