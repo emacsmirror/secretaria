@@ -56,9 +56,18 @@
         ((executable-find "notify-send") 'libnotify)
         (t 'message)))
 
-(defcustom secretaria-clocked-in-reminder-every-minutes 10 "Minutes before firing a reminder of the task clocked in." :type 'integer)
-(defcustom secretaria-style-best-available (secretaria--style-get-best-available) "Use the best notification style available for the current operating system." :type 'symbol)
-(defcustom secretaria-notification-handler-overwrite t "Tells Secretaria we want to use her notification function with `org-show-notification-handler'.  WARNING: Change this if you know what you are doing!." :type 'bool)
+(defcustom secretaria-clocked-in-reminder-every-minutes 10
+  "Minutes before firing a reminder of the task clocked in."
+  :type 'integer
+  :group 'secretaria)
+(defcustom secretaria-style-best-available (secretaria--style-get-best-available)
+  "Use the best notification style available for the current operating system."
+  :type 'symbol
+  :group 'secretaria)
+(defcustom secretaria-notification-handler-overwrite t
+  "Tells Secretaria we want to use her notification function with `org-show-notification-handler'.  WARNING: Change this if you know what you are doing!."
+  :type 'bool
+  :group 'secretaria)
 
 (defun secretaria-task-clocked-time ()
   "Return a string with the clocked time and effort, if any."
