@@ -49,6 +49,8 @@
 (require 'org-clock)
 (require 'subr-x)
 
+(defvar secretaria-clocked-in-reminder-timer)
+
 (defun secretaria--style-get-best-available ()
   "Return the best style available for the current system."
   (cond ((eq system-type "darwin") 'osx-notifier)
