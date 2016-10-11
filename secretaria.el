@@ -47,5 +47,9 @@
 (require 'secretaria-appt)
 (require 'secretaria-clock)
 
+(defgroup secretaria nil
+  "An attempt of an assistant for you in org-mode"
+  :group 'org)
+
 (provide 'secretaria)
 ;;; secretaria.el ends here

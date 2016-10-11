@@ -45,8 +45,13 @@
 (require 'f)
 (require 'org)
 (require 'org-agenda)
+(require 'subr-x)
+(require 'alert)
 
-(defcustom secretaria-today-unknown-time-appt-remind-every 30 "Minutes before firing a reminder about tasks for today with no specified time of the day." :type 'interger)
+(defcustom secretaria-today-unknown-time-appt-remind-every 30
+  "Minutes before firing a reminder about tasks for today with no specified time of the day."
+  :type 'interger
+  :group 'secretaria)
 
 (defun secretaria--leaders-prepare (fortodaytasks)
   "Return a regexp for due `org-agenda' leaders.
