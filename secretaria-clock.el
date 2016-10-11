@@ -72,6 +72,10 @@
   "Tells Secretaria we want to use her notification function with `org-show-notification-handler'.  WARNING: Change this if you know what you are doing!."
   :type 'bool
   :group 'secretaria)
+(defcustom secretaria-clocked-task-save-file (locate-user-emacs-file "secretaria-clocked-task")
+  "File which keeps the name of the current clocked in task."
+  :type 'file
+  :group 'secretaria)
 
 (defun secretaria-task-clocked-time ()
   "Return a string with the clocked time and effort, if any."
@@ -126,25 +130,25 @@
 (defun secretaria-task-save-clocked-task ()
   "Save into a file the current clocked task."
   (when org-clock-current-task
-    (with-temp-file (expand-file-name "~/.secretaria-clocked-task")
+    (with-temp-file (expand-file-name secretaria-clocked-task-save-file)
       (insert org-clock-current-task))))
 
 (defun secretaria-task-load-clocked-task ()
   "Load the clocked task, if any.  And tell the user about it."
-  (if (file-exists-p "~/.secretaria-clocked-task")
+  (if (file-exists-p secretaria-clocked-task-save-file)
       (with-temp-buffer
-        (insert-file-contents "~/.secretaria-clocked-task")
+        (insert-file-contents secretaria-clocked-task-save-file)
         (when (not (string-empty-p (buffer-string)))
           (alert (format "Something went wrong with Emacs while this task was clocked: <b>%s</b>" (buffer-string)) :title "Oops! Don't forget you were doing something, boss!" :severity 'high)
           (secretaria--task-delete-save-clocked-task)))))
 
 (defun secretaria--task-delete-save-clocked-task ()
   "Delete the saved clocked task."
-  (ignore-errors (delete-file "~/.secretaria-clocked-task")))
+  (ignore-errors (delete-file secretaria-clocked-task-save-file)))
 
 (defun secretaria--task-saved-clocked-task-p ()
   "Check if the current clocked task was saved."
-  (file-exists-p "~/.secretaria-clocked-task"))
+  (file-exists-p secretaria-clocked-task-save-file))
 
 (add-hook 'org-clock-in-hook #'secretaria-task-clocked-in t)
 (add-hook 'org-clock-out-hook #'secretaria-task-clocked-out t)
