@@ -5,7 +5,7 @@
 ;; Author: Jorge Araya Navarro <elcorreo@deshackra.com>
 ;; Keywords: org, convenience
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (alert "1.2") (s "1.11.0") (f "0.19.0"))
-;; Package-Version: 0.2
+;; Package-Version: 0.2.1
 ;; Homepage: https://bitbucket.org/shackra/secretaria.el
 
 ;; This file is not part of GNU Emacs.

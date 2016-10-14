@@ -110,15 +110,16 @@ Those tasks for today have no time of the day specified"
          (today (calendar-current-date))
          (today-regexp (secretaria--leaders-prepare t)))
     (dolist (file files)
-      (let* ((entries (org-agenda-get-day-entries file today :scheduled :deadline)))
-        (dolist (entry entries)
-          (if (and (string-match-p today-regexp (get-text-property 0 'extra entry))
-                 (string-empty-p (get-text-property 0 'time entry)))
-              (alert (format "%s" (get-text-property 0 'txt entry))
-                     :title "Task for today with an unknown time of day"
-                     :severity (secretaria--conditional-severity)
-                     :style secretaria-style-best-available
-                     :mode 'org-mode)))))))
+      (with-current-buffer (get-file-buffer file)
+        (let* ((entries (org-agenda-get-day-entries file today :scheduled :deadline)))
+          (dolist (entry entries)
+            (if (and (string-match-p today-regexp (get-text-property 0 'extra entry))
+                   (string-empty-p (get-text-property 0 'time entry)))
+                (alert (format "%s" (get-text-property 0 'txt entry))
+                       :title "Task for today with an unknown time of day"
+                       :severity (secretaria--conditional-severity)
+                       :style secretaria-style-best-available
+                       :mode 'org-mode))))))))
 
 (defun secretaria-update-appt ()
   "Update appointments if the saved file is part of `org-agenda-files'."
