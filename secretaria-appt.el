@@ -48,6 +48,9 @@
 (require 'subr-x)
 (require 'alert)
 
+(defvar secretaria-today-uknown-time-reminder-timer nil
+  "Timer for periodically remind the user about pending tasks.")
+
 (defcustom secretaria-today-unknown-time-appt-remind-every 30
   "Minutes before firing a reminder about tasks for today with no specified time of the day."
   :type 'interger
@@ -99,7 +102,6 @@ match tasks scheduled or with a deadline for today"
       (alert (format "You have <b>%d due task%s</b>! please check org-agenda." due-todos (if (>= due-todos 2) "s" ""))
              :title "I need your attention urgently, boss!"
              :severity 'high
-             :style secretaria-style-best-available
              :mode 'org-mode))))
 
 (defun secretaria-today-unknown-time-appt ()
@@ -115,10 +117,9 @@ Those tasks for today have no time of the day specified"
           (dolist (entry entries)
             (if (and (string-match-p today-regexp (get-text-property 0 'extra entry))
                    (string-empty-p (get-text-property 0 'time entry)))
-                (alert (format "%s" (get-text-property 0 'txt entry))
-                       :title "Task for today with an unknown time of day"
+                (alert "Task for today with an unknown time of day"
+                       :title (format "%s" (get-text-property 0 'txt entry))
                        :severity (secretaria--conditional-severity)
-                       :style secretaria-style-best-available
                        :mode 'org-mode))))))))
 
 (defun secretaria-update-appt ()

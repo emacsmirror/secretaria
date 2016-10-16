@@ -2,7 +2,7 @@
 
 # What's this?
 
-My attempt of an assistant for you in org-mode. This library contains
+A personal assistant based on org-mode. This library contains
 utilities that enhance your experience with org-mode.
 
 # Features
