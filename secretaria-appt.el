@@ -93,6 +93,10 @@ match tasks scheduled or with a deadline for today"
          (today (calendar-current-date))
          (due-regexp (secretaria--leaders-prepare nil)))
     (dolist (file files)
+      ;; Took from https://github.com/kiwanami/emacs-calfw/issues/26#issuecomment-24881831
+      (setf org-agenda-buffer
+            (when (buffer-live-p org-agenda-buffer)
+              org-agenda-buffer))
       (let* ((entries (org-agenda-get-day-entries file today :scheduled :deadline)))
         (dolist (entry entries)
           ;; Get how many times the task was re-scheduled, and count it
@@ -112,15 +116,17 @@ Those tasks for today have no time of the day specified"
          (today (calendar-current-date))
          (today-regexp (secretaria--leaders-prepare t)))
     (dolist (file files)
-      (with-current-buffer (get-file-buffer file)
-        (let* ((entries (org-agenda-get-day-entries file today :scheduled :deadline)))
-          (dolist (entry entries)
-            (if (and (string-match-p today-regexp (get-text-property 0 'extra entry))
-                   (string-empty-p (get-text-property 0 'time entry)))
-                (alert "Task for today with an unknown time of day"
-                       :title (format "%s" (get-text-property 0 'txt entry))
-                       :severity (secretaria--conditional-severity)
-                       :mode 'org-mode))))))))
+      (setf org-agenda-buffer
+            (when (buffer-live-p org-agenda-buffer)
+              org-agenda-buffer))
+      (let* ((entries (org-agenda-get-day-entries file today :scheduled :deadline)))
+        (dolist (entry entries)
+          (if (and (string-match-p today-regexp (get-text-property 0 'extra entry))
+                 (string-empty-p (get-text-property 0 'time entry)))
+              (alert "Task for today with an unknown time of day"
+                     :title (format "%s" (get-text-property 0 'txt entry))
+                     :severity (secretaria--conditional-severity)
+                     :mode 'org-mode)))))))
 
 (defun secretaria-update-appt ()
   "Update appointments if the saved file is part of `org-agenda-files'."
