@@ -5,7 +5,7 @@
 ;; Author: Jorge Araya Navarro <elcorreo@deshackra.com>
 ;; Keywords: org, convenience
 ;; Package-Requires: ((emacs "24.4") (org "8.0") (alert "1.2") (s "1.11.0") (f "0.19.0"))
-;; Package-Version: 0.2.3
+;; Package-Version: 0.2.4
 ;; Homepage: https://bitbucket.org/shackra/secretaria.el
 
 ;; This file is not part of GNU Emacs.
@@ -25,7 +25,30 @@
 
 ;;; Commentary:
 
-;; secretaria.el is the main file of the project
+;; # What's this?
+;;
+;; A personal assistant based on org-mode.  This package contains utilities that
+;; enhance your experience with org-mode.
+;;
+;; # Features
+;;
+;; - Reminders
+;; - All tasks scheduled or that have a deadline set to "today", but have no time of the day
+;; specified.
+;; - The current clocked task, every N minutes (10 by default).
+;; - In case of Emacs crashing, the task clocked in at the moment so you don't forget about fixing
+;; that.
+;;
+;; # How to use
+;;
+;; This package should be available in Melpa, if you use `use-package`, throw this code snippet in your
+;; Emacs configuration.
+;;
+;;     (use-package secretaria
+;;       :config
+;;       ;; use this for getting a reminder every 30 minutes of those tasks scheduled
+;;       ;; for today and which have no time of day defined.
+;;       (add-hook 'after-init-hook #'secretaria-today-unknown-time-appt-always-remind-me))
 
 ;;; Prayer:
 
