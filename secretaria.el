@@ -1,4 +1,4 @@
-;;; secretaria.el --- An attempt of an assistant for you in org-mode
+;;; secretaria.el --- A personal assistant based on org-mode
 
 ;; Copyright (C) 2016 Jorge Araya Navarro
 
@@ -71,7 +71,7 @@
 (require 'secretaria-clock)
 
 (defgroup secretaria nil
-  "An attempt of an assistant for you in org-mode"
+  "A personal assistant based on org-mode"
   :group 'org)
 
 (provide 'secretaria)
