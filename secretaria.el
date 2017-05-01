@@ -1,10 +1,10 @@
 ;;; secretaria.el --- A personal assistant based on org-mode
 
-;; Copyright (C) 2016 Jorge Araya Navarro
+;; Copyright (C) 2016-2017 Jorge Araya Navarro
 
 ;; Author: Jorge Araya Navarro <elcorreo@deshackra.com>
 ;; Keywords: org, convenience
-;; Package-Requires: ((emacs "24.4") (org "8.0") (alert "1.2") (s "1.11.0") (f "0.19.0"))
+;; Package-Requires: ((emacs "24.4") (org "9.0") (alert "1.2") (s "1.11.0") (f "0.19.0"))
 ;; Package-Version: 0.2.4
 ;; Homepage: https://bitbucket.org/shackra/secretaria.el
 
