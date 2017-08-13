@@ -128,7 +128,8 @@ Those tasks for today have no time of the day specified"
         (let* ((entries (org-agenda-get-day-entries file today :scheduled :deadline)))
           (dolist (entry entries)
             (if (and (string-match-p today-regexp (get-text-property 0 'extra entry))
-                   (string-empty-p (get-text-property 0 'time entry)))
+                   (string-empty-p (get-text-property 0 'time entry))
+                   (not (string-suffix-p org-clock-current-task (get-text-property 0 'txt entry))))
                 (alert "Pending Task for today with unknown time of day"
                        :title (format "%s" (get-text-property 0 'txt entry))
                        :severity (secretaria--conditional-severity)
