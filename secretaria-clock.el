@@ -1,8 +1,8 @@
 ;;; secretaria-clock.el --- Org-mode clock related enhance
 
-;; Copyright (C) 2016 Jorge Araya Navarro
+;; Copyright (C) 2016-2017 Jorge Araya Navarro
 
-;; Author: Jorge Araya Navarro <elcorreo@deshackra.com>
+;; Author: Jorge Araya Navarro <jorge@esavara.cr>
 ;; Keywords: org, convenience
 ;; Homepage: https://bitbucket.org/shackra/secretaria.el
 
@@ -56,10 +56,12 @@
   "Minutes before firing a reminder of the task clocked in."
   :type 'integer
   :group 'secretaria)
+
 (defcustom secretaria-notification-handler-overwrite t
   "Tells Secretaria we want to use her notification function with `org-show-notification-handler'.  WARNING: Change this if you know what you are doing!."
   :type 'bool
   :group 'secretaria)
+
 (defcustom secretaria-clocked-task-save-file (locate-user-emacs-file "secretaria-clocked-task")
   "File which keeps the name of the current clocked in task."
   :type 'file

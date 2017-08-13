@@ -1,8 +1,8 @@
 ;;; secretaria-appt.el --- Functions dealing with org-mode appointments
 
-;; Copyright (C) 2016 Jorge Javier Araya Navarro
+;; Copyright (C) 2016-2017 Jorge Javier Araya Navarro
 
-;; Author: Jorge Javier Araya Navarro <elcorreo@deshackra.com>
+;; Author: Jorge Javier Araya Navarro <jorge@esavara.cr>
 ;; Keywords: convenience, appt
 ;; Homepage: https://bitbucket.org/shackra/secretaria
 
@@ -56,11 +56,15 @@
   :type 'interger
   :group 'secretaria)
 
+(defun secretaria--skip-entry-if-done ()
+  "Skip `org-mode' entries if they are DONE."
+  (org-agenda-skip-entry-if 'todo 'done))
+
 (defun secretaria--leaders-prepare (fortodaytasks)
   "Return a regexp for due `org-agenda' leaders.
 
 If `FORTODAYTASKS' is non-nil, return a regexp string that will
-match tasks scheduled or with a deadline for today"
+match tasks scheduled or with deadline for today"
   (let* ((leaders (append org-agenda-deadline-leaders org-agenda-scheduled-leaders))
          (regexpleaders '()))
     (dolist (leader leaders)
@@ -97,11 +101,12 @@ match tasks scheduled or with a deadline for today"
       (setf org-agenda-buffer
             (when (buffer-live-p org-agenda-buffer)
               org-agenda-buffer))
-      (let* ((entries (org-agenda-get-day-entries file today :scheduled :deadline)))
-        (dolist (entry entries)
-          ;; Get how many times the task was re-scheduled, and count it
-          (when (string-match-p due-regexp (get-text-property 0 'extra entry))
-            (setf due-todos (1+ due-todos))))))
+      (let ((org-agenda-skip-function '(secretaria--skip-entry-if-done)))
+        (let* ((entries (org-agenda-get-day-entries file today :scheduled :deadline)))
+          (dolist (entry entries)
+            ;; Get how many times the task was re-scheduled, and count it
+            (when (string-match-p due-regexp (get-text-property 0 'extra entry))
+              (setf due-todos (1+ due-todos)))))))
     (when (> due-todos 0)
       (alert (format "You have <b>%d due task%s</b>! please check org-agenda." due-todos (if (>= due-todos 2) "s" ""))
              :title "I need your attention urgently, boss!"
@@ -119,14 +124,15 @@ Those tasks for today have no time of the day specified"
       (setf org-agenda-buffer
             (when (buffer-live-p org-agenda-buffer)
               org-agenda-buffer))
-      (let* ((entries (org-agenda-get-day-entries file today :scheduled :deadline)))
-        (dolist (entry entries)
-          (if (and (string-match-p today-regexp (get-text-property 0 'extra entry))
-                 (string-empty-p (get-text-property 0 'time entry)))
-              (alert "Task for today with an unknown time of day"
-                     :title (format "%s" (get-text-property 0 'txt entry))
-                     :severity (secretaria--conditional-severity)
-                     :mode 'org-mode)))))))
+      (let ((org-agenda-skip-function '(secretaria--skip-entry-if-done)))
+        (let* ((entries (org-agenda-get-day-entries file today :scheduled :deadline)))
+          (dolist (entry entries)
+            (if (and (string-match-p today-regexp (get-text-property 0 'extra entry))
+                   (string-empty-p (get-text-property 0 'time entry)))
+                (alert "Pending Task for today with unknown time of day"
+                       :title (format "%s" (get-text-property 0 'txt entry))
+                       :severity (secretaria--conditional-severity)
+                       :mode 'org-mode))))))))
 
 (defun secretaria-update-appt ()
   "Update appointments if the saved file is part of `org-agenda-files'."
