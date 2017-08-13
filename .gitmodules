@@ -1,0 +1,3 @@
+[submodule "git-scripts/auto-changelog-hook"]
+	path = git-scripts/auto-changelog-hook
+	url = https://gitlab.com/shackra/auto-changelog-hook.git
