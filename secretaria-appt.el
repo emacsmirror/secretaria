@@ -58,7 +58,7 @@
 
 (defun secretaria--skip-entry-if-done ()
   "Skip `org-mode' entries if they are DONE."
-  (org-agenda-skip-entry-if 'todo 'done))
+  (org-agenda-skip-entry-if 'done))
 
 (defun secretaria--leaders-prepare (fortodaytasks)
   "Return a regexp for due `org-agenda' leaders.

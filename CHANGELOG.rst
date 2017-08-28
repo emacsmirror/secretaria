@@ -2,6 +2,18 @@ Changelog
 =========
 
 
+0.2.7 (2017-08-28)
+------------------
+
+Fix
+~~~
+- Do not skip `todo` entries. [Jorge Araya Navarro]
+
+  `org-agenda-skip-entry-if` skip an entry *if any of the conditions are true*.
+
+  refs #8
+
+
 0.2.6 (2017-08-28)
 ------------------
 
