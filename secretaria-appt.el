@@ -65,17 +65,18 @@
 
 If `FORTODAYTASKS' is non-nil, return a regexp string that will
 match tasks scheduled or with deadline for today"
-  (let* ((leaders (append org-agenda-deadline-leaders org-agenda-scheduled-leaders))
-         (regexpleaders '()))
-    (dolist (leader leaders)
-      (setf leader (string-trim leader))
-      (if fortodaytasks
-          ;; FIXME: This `when' `when' thing feels weird
-          (when (not (string-match-p "%[0-9]?d" leader))
-            (push leader regexpleaders))
-        (when (string-match-p "%[0-9]?d" leader)
-          (push (replace-regexp-in-string "%[0-9]?d" "[0-9]+" leader) regexpleaders))))
-    (mapconcat 'identity regexpleaders "\\|")))
+  (let ((org-agenda-skip-function '(secretaria--skip-entry-if-done)))
+    (let* ((leaders (append org-agenda-deadline-leaders org-agenda-scheduled-leaders))
+           (regexpleaders '()))
+      (dolist (leader leaders)
+        (setf leader (string-trim leader))
+        (if fortodaytasks
+            ;; FIXME: This `when' `when' thing feels weird
+            (when (not (string-match-p "%[0-9]?d" leader))
+              (push leader regexpleaders))
+          (when (string-match-p "%[0-9]?d" leader)
+            (push (replace-regexp-in-string "%[0-9]?d" "[0-9]+" leader) regexpleaders))))
+      (mapconcat 'identity regexpleaders "\\|"))))
 
 (defun secretaria--conditional-severity ()
   "Return a severity level for Alert if Emacs is ran as a daemon."
