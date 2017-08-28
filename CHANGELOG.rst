@@ -2,8 +2,28 @@ Changelog
 =========
 
 
-(unreleased)
-------------
+0.2.6 (2017-08-28)
+------------------
+
+Changes
+~~~~~~~
+- Avoid reminding currently clocked task. [Jorge Araya Navarro]
+
+  Makes no sense to remind the user about a task they are currently working in
+
+Fix
+~~~
+- Sets `org-clock-current-task' to empty string if nil. [Jorge Araya
+  Navarro]
+
+  Avoid conflicts of types with `string-match-p'
+- Stop reminding about DONE tasks for today. [Jorge Araya Navarro]
+
+  fixes #8
+
+
+0.2.5 (2017-08-13)
+------------------
 
 Changes
 ~~~~~~~
