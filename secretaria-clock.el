@@ -65,6 +65,11 @@
   :type 'bool
   :group 'secretaria)
 
+(defcustom secretaria-notification-to-html nil
+  "Convert org markup to HTML, otherwise to plain text if nil."
+  :type 'bool
+  :group 'secretaria)
+
 (defcustom secretaria-clocked-task-save-file (locate-user-emacs-file "secretaria-clocked-task")
   "File which keeps the name of the current clocked in task."
   :type 'file
@@ -74,7 +79,9 @@
   "Convert a MESSAGE in org markup to HTML."
   (unless message
     "")
-  (replace-regexp-in-string secretaria--org-url-regexp "<a href=\"\\1\">\\2</a>" message))
+  (if secretaria-notification-to-html
+      (replace-regexp-in-string secretaria--org-url-regexp "<a href=\"\\1\">\\2</a>" message)
+    (replace-regexp-in-string secretaria--org-url-regexp "\\2" message)))
 
 (defun secretaria-task-clocked-time ()
   "Return a string with the clocked time and effort, if any."
