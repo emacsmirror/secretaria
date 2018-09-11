@@ -8,4 +8,5 @@ testing:
     - emacs --version
     - cask version
     - cask install
+    - ls -a
     - cask exec ert-runner --quiet
