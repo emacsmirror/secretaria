@@ -1,5 +1,8 @@
 image: "registry.gitlab.com/joewreschnig/emacs-cask-docker-image:alpine-edge"
 
+before_script:
+  - apk update && apk add bash
+
 testing:
   script:
     - emacs --version
