@@ -1,0 +1,8 @@
+image: "registry.gitlab.com/joewreschnig/emacs-cask-docker-image:alpine-edge"
+
+testing:
+  script:
+    - emacs --version
+    - cask version
+    - cask install
+    - cask exec ert-runner --quiet

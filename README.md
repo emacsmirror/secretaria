@@ -1,6 +1,6 @@
 ![A pretty and busy office lady](http://i.imgur.com/NginR7g.png)
 
-[![MELPA](http://melpa.milkbox.net/packages/secretaria-badge.svg)](http://melpa.milkbox.net/#/secretaria)
+[![MELPA](http://melpa.milkbox.net/packages/secretaria-badge.svg)](http://melpa.milkbox.net/#/secretaria) [![pipeline status](https://gitlab.com/shackra/secretaria/badges/master/pipeline.svg)](https://gitlab.com/shackra/secretaria/commits/master)
 
 # What's this?
 
@@ -10,8 +10,7 @@ with org-mode.
 # Features
 
 - Reminders
-  - All tasks scheduled or that have a deadline set to "today", but have no time of the day
-    specified.
+  - All tasks scheduled or that have a deadline set to "today" with an unspecified time of day.
   - The current clocked task, every N minutes (10 by default).
   - In case of Emacs crashing, the task clocked in at the moment so you don't forget about fixing
     that.
