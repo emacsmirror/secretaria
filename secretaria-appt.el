@@ -114,7 +114,7 @@ Those tasks have no time of the day specified"
   (secretaria-appt-alert-unknown-time-appt))
 
 (defun secretaria-appt-org-file-agenda-p (filename-directory)
-  "Return t if FILENAME-DIRECTORY is in `org-agenda-files'."
+  "Return t if FILENAME-DIRECTORY is in variable `org-agenda-files'."
   (when (not (eq filename-directory nil))
     (if (listp org-agenda-files)
         (or (member filename-directory (org-agenda-files))
@@ -149,7 +149,7 @@ KIND is either 'due or 'unknown.  'due is for due appointments,
     appts))
 
 (defun secretaria-appt-after-save-update-appt ()
-  "Update appointments if the saved file is part of `org-agenda-files'."
+  "Update appointments if the saved file is part of variable `org-agenda-files'."
   (interactive)
   (when (eq major-mode 'org-mode)
     (when (secretaria-appt-org-file-agenda-p buffer-file-name)
