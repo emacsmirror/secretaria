@@ -114,11 +114,10 @@ Those tasks have no time of the day specified"
   (secretaria-appt-alert-unknown-time-appt))
 
 (defun secretaria-appt-org-file-agenda-p (filename-directory)
-  "Return t if FILENAME-DIRECTORY is in variable `org-agenda-files'."
-  (when (not (eq filename-directory nil))
-    (if (listp org-agenda-files)
-        (or (member filename-directory (org-agenda-files))
-            (file-in-directory-p (file-name-nondirectory filename-directory) org-directory)))))
+  "Return t if FILENAME-DIRECTORY is in variable `org-agenda-files' or exists in directory `org-directory'."
+  (when (or (member (expand-file-name filename-directory) (org-agenda-files))
+            (file-in-directory-p (file-name-nondirectory (expand-file-name filename-directory)) org-directory))
+    t))
 
 (defun secretaria-appt-get-appt (kind)
   "Return a list of appointments.
