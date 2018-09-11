@@ -49,41 +49,41 @@
 (require 'org-clock)
 (require 'subr-x)
 
-(defvar secretaria-clocked-in-reminder-timer nil
+(defvar secretaria-clock-clocked-in-reminder-timer nil
   "A timer set when the user clocks in a task.")
 
-(defcustom secretaria-clocked-in-reminder-every-minutes 10
+(defcustom secretaria-clock-clocked-in-reminder-every-minutes 10
   "Minutes before firing a reminder of the task clocked in."
   :type 'integer
   :group 'secretaria)
 
-(defvar secretaria--org-url-regexp (rx "[[" (group (one-or-more (not (any "]")))) "][" (group (one-or-more (not (any "]")))) "]]")
+(defvar secretaria-clock--org-url-regexp (rx "[[" (group (one-or-more (not (any "]")))) "][" (group (one-or-more (not (any "]")))) "]]")
   "Search for links in `org-mode' markup.")
 
-(defcustom secretaria-notification-handler-overwrite t
+(defcustom secretaria-clock-notification-handler-overwrite t
   "Tells Secretaria we want to use her notification function with `org-show-notification-handler'.  WARNING: Change this if you know what you are doing!."
   :type 'bool
   :group 'secretaria)
 
-(defcustom secretaria-notification-to-html nil
+(defcustom secretaria-clock-notification-to-html nil
   "Convert org markup to HTML, otherwise to plain text if nil."
   :type 'bool
   :group 'secretaria)
 
-(defcustom secretaria-clocked-task-save-file (locate-user-emacs-file "secretaria-clocked-task")
+(defcustom secretaria-clock-clocked-task-save-file (locate-user-emacs-file "secretaria-clock-clocked-task")
   "File which keeps the name of the current clocked in task."
   :type 'file
   :group 'secretaria)
 
-(defun secretaria--org-to-html (message)
+(defun secretaria-clock--org-to-html (message)
   "Convert a MESSAGE in org markup to HTML."
   (unless message
     "")
-  (if secretaria-notification-to-html
-      (replace-regexp-in-string secretaria--org-url-regexp "<a href=\"\\1\">\\2</a>" message)
-    (replace-regexp-in-string secretaria--org-url-regexp "\\2" message)))
+  (if secretaria-clock-notification-to-html
+      (replace-regexp-in-string secretaria-clock--org-url-regexp "<a href=\"\\1\">\\2</a>" message)
+    (replace-regexp-in-string secretaria-clock--org-url-regexp "\\2" message)))
 
-(defun secretaria-task-clocked-time ()
+(defun secretaria-clock-task-clocked-time ()
   "Return a string with the clocked time and effort, if any."
   (interactive)
   (let* ((clocked-time (org-clock-get-clocked-time))
@@ -99,89 +99,89 @@
           (format "%s/%s" work-done-str effort-str))
       (format "%s" work-done-str))))
 
-(defun secretaria-notification-handler (notification)
+(defun secretaria-clock-notification-handler (notification)
   "Handle `org-mode' notifications.
 
 `NOTIFICATION' is, well, the notification from `org-mode'"
   (if (not (s-contains? "should be finished by now" notification))
       (alert notification :title "Secretaria: message from org-mode" :mode 'org-mode)
-    (alert (secretaria--org-to-html org-clock-current-task)
-           :title (format "Task's estimate effort has been reach! (%s)" (secretaria-task-clocked-time))
+    (alert (secretaria-clock--org-to-html org-clock-current-task)
+           :title (format "Task's estimate effort has been reach! (%s)" (secretaria-clock-task-clocked-time))
            :severity 'high
            :mode 'org-mode)))
 
-(defun secretaria-remind-task-clocked-in ()
+(defun secretaria-clock-remind-task-clocked-in ()
   "Fires an alert for the user reminding him which task he is working on."
   (when org-clock-current-task
     (if (not org-clock-task-overrun)
-        (alert (secretaria--org-to-html org-clock-current-task)
+        (alert (secretaria-clock--org-to-html org-clock-current-task)
                :title "Currently clocked"
                :severity 'trivial
                :mode 'org-mode)
-      (alert (secretaria--org-to-html org-clock-current-task)
-             :title (format "Task's estimated effort exceeded! (%s)" (secretaria-task-clocked-time))
+      (alert (secretaria-clock--org-to-html org-clock-current-task)
+             :title (format "Task's estimated effort exceeded! (%s)" (secretaria-clock-task-clocked-time))
              :severity 'urgent
              :mode 'org-mode))))
 
-(defun secretaria-task-clocked-in ()
+(defun secretaria-clock-task-clocked-in ()
   "Start a timer when a task is clocked-in."
-  (secretaria-task-save-clocked-task)
-  (setf secretaria-clocked-in-reminder-timer (run-at-time (format "%s min" (or secretaria-clocked-in-reminder-every-minutes 10)) (* (or secretaria-clocked-in-reminder-every-minutes 10) 60) 'secretaria-remind-task-clocked-in))
-  (alert (secretaria--org-to-html org-clock-current-task)
-         :title (format "Task clocked in! (%s)" (secretaria-task-clocked-time))
+  (secretaria-clock-task-save-clocked-task)
+  (setf secretaria-clock-clocked-in-reminder-timer (run-at-time (format "%s min" (or secretaria-clock-clocked-in-reminder-every-minutes 10)) (* (or secretaria-clock-clocked-in-reminder-every-minutes 10) 60) 'secretaria-clock-remind-task-clocked-in))
+  (alert (secretaria-clock--org-to-html org-clock-current-task)
+         :title (format "Task clocked in! (%s)" (secretaria-clock-task-clocked-time))
          :mode 'org-mode ))
 
-(defun secretaria-task-clocked-out ()
+(defun secretaria-clock-task-clocked-out ()
   "Stop reminding the clocked-in task."
-  (secretaria--task-delete-save-clocked-task)
-  (ignore-errors (cancel-timer secretaria-clocked-in-reminder-timer))
+  (secretaria-clock--task-delete-save-clocked-task)
+  (ignore-errors (cancel-timer secretaria-clock-clocked-in-reminder-timer))
   (when org-clock-current-task
-    (alert (secretaria--org-to-html org-clock-current-task)
-           :title (format "Task clocked out! (%s)" (secretaria-task-clocked-time))
+    (alert (secretaria-clock--org-to-html org-clock-current-task)
+           :title (format "Task clocked out! (%s)" (secretaria-clock-task-clocked-time))
            :severity 'high
            :mode 'org-mode)))
 
-(defun secretaria-task-clocked-canceled ()
+(defun secretaria-clock-task-clocked-canceled ()
   "Stop reminding the clocked-in task if it's canceled."
-  (cancel-timer secretaria-clocked-in-reminder-timer)
+  (cancel-timer secretaria-clock-clocked-in-reminder-timer)
   (when org-clock-current-task
-    (alert (secretaria--org-to-html org-clock-current-task)
-           :title (format "Task canceled! (%s)" (secretaria-task-clocked-time))
+    (alert (secretaria-clock--org-to-html org-clock-current-task)
+           :title (format "Task canceled! (%s)" (secretaria-clock-task-clocked-time))
            :severity 'high
            :mode 'org-mode)))
 
-(defun secretaria-task-save-clocked-task ()
+(defun secretaria-clock-task-save-clocked-task ()
   "Save into a file the current clocked task."
   (when org-clock-current-task
-    (with-temp-file (expand-file-name secretaria-clocked-task-save-file)
+    (with-temp-file (expand-file-name secretaria-clock-clocked-task-save-file)
       (insert org-clock-current-task))))
 
-(defun secretaria-task-load-clocked-task ()
+(defun secretaria-clock-task-load-clocked-task ()
   "Load the clocked task, if any.  And tell the user about it."
-  (if (file-exists-p secretaria-clocked-task-save-file)
+  (if (file-exists-p secretaria-clock-clocked-task-save-file)
       (with-temp-buffer
-        (insert-file-contents secretaria-clocked-task-save-file)
+        (insert-file-contents secretaria-clock-clocked-task-save-file)
         (when (not (string-empty-p (buffer-string)))
           (alert (format "Something went wrong with Emacs while this task was clocked: <b>%s</b>" (buffer-string))
                  :title "Oops! Don't forget you were doing something, boss!"
                  :severity 'high)
-          (secretaria--task-delete-save-clocked-task)))))
+          (secretaria-clock--task-delete-save-clocked-task)))))
 
-(defun secretaria--task-delete-save-clocked-task ()
+(defun secretaria-clock--task-delete-save-clocked-task ()
   "Delete the saved clocked task."
-  (ignore-errors (delete-file secretaria-clocked-task-save-file)))
+  (ignore-errors (delete-file secretaria-clock-clocked-task-save-file)))
 
-(defun secretaria--task-saved-clocked-task-p ()
+(defun secretaria-clock--task-saved-clocked-task-p ()
   "Check if the current clocked task was saved."
-  (file-exists-p secretaria-clocked-task-save-file))
+  (file-exists-p secretaria-clock-clocked-task-save-file))
 
-(add-hook 'org-clock-in-hook #'secretaria-task-clocked-in t)
-(add-hook 'org-clock-out-hook #'secretaria-task-clocked-out t)
-(add-hook 'org-clock-cancel-hook #'secretaria-task-clocked-canceled t)
-(add-hook 'after-init-hook #'secretaria-task-load-clocked-task)
+(add-hook 'org-clock-in-hook #'secretaria-clock-task-clocked-in t)
+(add-hook 'org-clock-out-hook #'secretaria-clock-task-clocked-out t)
+(add-hook 'org-clock-cancel-hook #'secretaria-clock-task-clocked-canceled t)
+(add-hook 'after-init-hook #'secretaria-clock-task-load-clocked-task)
 
-(when secretaria-notification-handler-overwrite
-  (setf org-show-notification-handler 'secretaria-notification-handler))
+(when secretaria-clock-notification-handler-overwrite
+  (setf org-show-notification-handler 'secretaria-clock-notification-handler))
 
 (provide 'secretaria-clock)
 ;;; secretaria-clock.el ends here

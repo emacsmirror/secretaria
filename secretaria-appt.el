@@ -50,30 +50,30 @@
 (eval-when-compile
   (require 'cl))
 
-(defvar secretaria-uknown-time-reminder-timer nil
+(defvar secretaria-appt-uknown-time-reminder-timer nil
   "Timer for periodically remind the user about pending tasks.")
 
-(defcustom secretaria-unknown-time-appt-remind-time 30
+(defcustom secretaria-appt-unknown-time-appt-remind-time 30
   "Minutes before firing a reminder about tasks for today with no specified time of the day."
   :type 'interger
   :group 'secretaria)
 
-(defun secretaria--skip-entry-if-done ()
+(defun secretaria-appt--skip-entry-if-done ()
   "Skip `org-mode' entries if they are DONE."
   (org-agenda-skip-entry-if 'done))
 
-(defun secretaria--conditional-severity ()
+(defun secretaria-appt--conditional-severity ()
   "Return a severity level for Alert if Emacs is ran as a daemon."
   (if (daemonp)
       'high
     'normal))
 
-(defun secretaria--trim-replace (string)
+(defun secretaria-appt--trim-replace (string)
   "Trim and replace any %d notation of STRING."
   (string-trim
    (replace-regexp-in-string "%[0-9]?d" "[0-9 ]+" string)))
 
-(defun secretaria--leaders-prepare (&optional today)
+(defun secretaria-appt--leaders-prepare (&optional today)
   "Return a regexp for due `org-agenda' leaders.
 
 If TODAY is non-nil, return a regexp string that will
@@ -86,41 +86,41 @@ match tasks scheduled or with deadline for today"
       (progn
         (push (car (cdr org-agenda-scheduled-leaders)) leaders)
         (push (car (cdr (cdr org-agenda-deadline-leaders))) leaders)))
-    (mapconcat 'identity (cl-map 'list #'secretaria--trim-replace leaders) "\\|")))
+    (mapconcat 'identity (cl-map 'list #'secretaria-appt--trim-replace leaders) "\\|")))
 
-(defun secretaria-alert-due-appt ()
+(defun secretaria-appt-alert-due-appt ()
   "Tell the user about due TODOs tasks."
-  (let (appts (secretaria-get-appt 'due))
+  (let (appts (secretaria-appt-get-appt 'due))
     (when (> 0 (length appts))
       (alert (format "Due entries: %s" (length appts))
              :title "Attention, boss!"
              :severity 'high
              :mode 'org-mode))))
 
-(defun secretaria-alert-unknown-time-appt ()
+(defun secretaria-appt-alert-unknown-time-appt ()
   "Tell the user about tasks scheduled for today.
 
 Those tasks have no time of the day specified"
-  (let (appts (secretaria-get-appt 'unknown))
+  (let (appts (secretaria-appt-get-appt 'unknown))
     (dolist (entry appts)
       (alert "Task for today, time unspecified"
              :title (or entry "(no title)")
-             :severity (secretaria--conditional-severity)
+             :severity (secretaria-appt--conditional-severity)
              :mode 'org-mode))))
 
-(defun secretaria-alert-after-init ()
+(defun secretaria-appt-alert-after-init ()
   "Entry point for all alerts about appointments."
-  (secretaria-alert-due-appt)
-  (secretaria-alert-unknown-time-appt))
+  (secretaria-appt-alert-due-appt)
+  (secretaria-appt-alert-unknown-time-appt))
 
-(defun secretaria-org-file-agenda-p (filename-directory)
+(defun secretaria-appt-org-file-agenda-p (filename-directory)
   "Return t if FILENAME-DIRECTORY is in `org-agenda-files'."
   (when (not (eq filename-directory nil))
     (if (listp org-agenda-files)
         (or (member filename-directory (org-agenda-files))
             (file-in-directory-p (file-name-nondirectory filename-directory) org-directory)))))
 
-(defun secretaria-get-appt (kind)
+(defun secretaria-appt-get-appt (kind)
   "Return a list of appointments.
 
 KIND is either 'due or 'unknown.  'due is for due appointments,
@@ -129,8 +129,8 @@ KIND is either 'due or 'unknown.  'due is for due appointments,
          (entries)
          (appts)
          (today (calendar-current-date))
-         (regexp (secretaria--leaders-prepare (if (eq kind 'due) nil t)))
-         (org-agenda-skip-function '(secretaria--skip-entry-if-done))
+         (regexp (secretaria-appt--leaders-prepare (if (eq kind 'due) nil t)))
+         (org-agenda-skip-function '(secretaria-appt--skip-entry-if-done))
          (org-clock-current-task (or org-clock-current-task "")))
     (dolist (file files)
       ;; Took from https://github.com/kiwanami/emacs-calfw/issues/26#issuecomment-24881831
@@ -148,25 +148,25 @@ KIND is either 'due or 'unknown.  'due is for due appointments,
           (push (substring-no-properties (get-text-property 0 'txt entry)) appts))))
     appts))
 
-(defun secretaria-after-save-update-appt ()
+(defun secretaria-appt-after-save-update-appt ()
   "Update appointments if the saved file is part of `org-agenda-files'."
   (interactive)
   (when (eq major-mode 'org-mode)
-    (when (secretaria-org-file-agenda-p buffer-file-name)
+    (when (secretaria-appt-org-file-agenda-p buffer-file-name)
       (org-agenda-to-appt t))))
 
-(defun secretaria-unknown-time-appt-always-remind-me ()
+(defun secretaria-appt-unknown-time-appt-always-remind-me ()
   "Timer for reminders of today tasks which have an unknown time of the day.
 
-If the variable `secretaria-unknown-time-appt-remind-time'
+If the variable `secretaria-appt-unknown-time-appt-remind-time'
 is 0, use the default of 30 minutes (to avoid accidents made by
 the user)."
-  (setf secretaria-uknown-time-reminder-timer
-        (run-at-time (format "%s min" (or secretaria-unknown-time-appt-remind-time 30))
-                     (* (or secretaria-unknown-time-appt-remind-time 30) 60) 'secretaria-alert-unknown-time-appt)))
+  (setf secretaria-appt-uknown-time-reminder-timer
+        (run-at-time (format "%s min" (or secretaria-appt-unknown-time-appt-remind-time 30))
+                     (* (or secretaria-appt-unknown-time-appt-remind-time 30) 60) 'secretaria-appt-alert-unknown-time-appt)))
 
-(add-hook 'after-init-hook #'secretaria-alert-after-init)
-(add-hook 'after-save-hook #'secretaria-after-save-update-appt)
+(add-hook 'after-init-hook #'secretaria-appt-alert-after-init)
+(add-hook 'after-save-hook #'secretaria-appt-after-save-update-appt)
 
 (provide 'secretaria-appt)
 ;;; secretaria-appt.el ends here
