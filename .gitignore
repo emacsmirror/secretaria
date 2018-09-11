@@ -34,4 +34,3 @@ tramp
 # server auth directory
 /server/
 sandbox/
-.ert-runner

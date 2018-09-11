@@ -47,7 +47,8 @@
 (require 'org-agenda)
 (require 'subr-x)
 (require 'alert)
-(require 'cl)
+(eval-when-compile
+  (require 'cl))
 
 (defvar secretaria-uknown-time-reminder-timer nil
   "Timer for periodically remind the user about pending tasks.")

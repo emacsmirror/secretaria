@@ -1,6 +1,6 @@
 (source melpa)
 
-(package "secretaria.el" "0.2.8" "A personal assistant based on org-mode")
+(package-file "secretaria.el")
 (files "secretaria*")
 
 (development

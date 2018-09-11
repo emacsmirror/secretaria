@@ -7,6 +7,6 @@ testing:
   script:
     - emacs --version
     - cask version
-    - cask install
-    - ls -a
-    - cask exec ert-runner --quiet
+    - cask install --dev
+    - cask build
+    - cask exec ert-runner --debug
