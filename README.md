@@ -1,11 +1,11 @@
-![A pretty and busy office lady](http://i.imgur.com/NginR7g.png)
-
 [![MELPA](http://melpa.milkbox.net/packages/secretaria-badge.svg)](http://melpa.milkbox.net/#/secretaria) [![pipeline status](https://gitlab.com/shackra/secretaria/badges/master/pipeline.svg)](https://gitlab.com/shackra/secretaria/commits/master)
 
 # What's this?
 
 A personal assistant based on org-mode. This package contains utilities that enhance your experience
 with org-mode.
+
+![A pretty and busy office lady](http://i.imgur.com/NginR7g.png)
 
 # Features
 
