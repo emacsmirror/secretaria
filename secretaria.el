@@ -5,8 +5,8 @@
 ;; Author: Jorge Araya Navarro <jorge@esavara.cr>
 ;; Keywords: org, convenience
 ;; Package-Requires: ((emacs "24.4") (alert "1.2") (s "1.12") (f "0.19.0"))
-;; Package-Version: 0.2.8
-;; Homepage: https://bitbucket.org/shackra/secretaria.el
+;; Package-Version: 0.2.9
+;; Homepage: https://gitlab.com/shackra/secretaria
 
 ;; This file is not part of GNU Emacs.
 
@@ -33,11 +33,11 @@
 ;; # Features
 ;;
 ;; - Reminders
-;; - All tasks scheduled or that have a deadline set to "today", but have no time of the day
-;; specified.
-;; - The current clocked task, every N minutes (10 by default).
-;; - In case of Emacs crashing, the task clocked in at the moment so you don't forget about fixing
-;; that.
+;;     - All tasks scheduled or which have a deadline set to "today", but have no time of the day
+;;       specified.
+;;     - The current clocked task, every N minutes (10 by default).
+;;     - In case of Emacs crashing, the task clocked in at the moment so you don't forget about fixing
+;;       that.
 ;;
 ;; # How to use
 ;;
@@ -48,7 +48,7 @@
 ;;       :config
 ;;       ;; use this for getting a reminder every 30 minutes of those tasks scheduled
 ;;       ;; for today and which have no time of day defined.
-;;       (add-hook 'after-init-hook #'secretaria-today-unknown-time-appt-always-remind-me))
+;;       (add-hook 'after-init-hook #'secretaria-unknown-time-always-remind-me))
 
 ;;; Prayer:
 
