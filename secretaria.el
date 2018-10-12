@@ -184,7 +184,7 @@ KIND is either 'due or 'unknown.  'due is for due appointments,
          (today (calendar-current-date))
          (regexp (secretaria--leaders-prepare (if (eq kind 'due) nil t)))
          (org-agenda-skip-function '(secretaria--skip-entry-if-done))
-         (org-current-task (or org-current-task "")))
+         (org-clock-current-task (or org-clock-current-task "")))
     (dolist (file files)
       ;; Took from https://github.com/kiwanami/emacs-calfw/issues/26#issuecomment-24881831
       (setf org-agenda-buffer
@@ -195,7 +195,7 @@ KIND is either 'due or 'unknown.  'due is for due appointments,
         (when (or (and (eq kind 'unknown)
                        (string-match-p regexp (get-text-property 0 'extra entry))
                        (string-empty-p (get-text-property 0 'time entry))
-                       (not (string-equal org-current-task (substring-no-properties (get-text-property 0 'txt entry)))))
+                       (not (string-equal org-clock-current-task (substring-no-properties (get-text-property 0 'txt entry)))))
                   (and (eq kind 'due)
                        (string-match-p regexp (get-text-property 0 'extra entry))))
           (push (substring-no-properties (get-text-property 0 'txt entry)) appts))))
@@ -248,20 +248,20 @@ the user)."
 `NOTIFICATION' is, well, the notification from `org-mode'"
   (if (not (s-contains? "should be finished by now" notification))
       (alert notification :title "Secretaria: message from org-mode" :mode 'org-mode)
-    (alert (secretaria--org-to-html org-current-task)
+    (alert (secretaria--org-to-html org-clock-current-task)
            :title (format "Task's estimate effort has been reach! (%s)" (secretaria-task-clocked-time))
            :severity 'high
            :mode 'org-mode)))
 
 (defun secretaria-remind-task-clocked-in ()
   "Fires an alert for the user reminding him which task he is working on."
-  (when org-current-task
+  (when org-clock-current-task
     (if (not org-task-overrun)
-        (alert (secretaria--org-to-html org-current-task)
+        (alert (secretaria--org-to-html org-clock-current-task)
                :title "Currently clocked"
                :severity 'trivial
                :mode 'org-mode)
-      (alert (secretaria--org-to-html org-current-task)
+      (alert (secretaria--org-to-html org-clock-current-task)
              :title (format "Task's estimated effort exceeded! (%s)" (secretaria-task-clocked-time))
              :severity 'urgent
              :mode 'org-mode))))
@@ -270,7 +270,7 @@ the user)."
   "Start a timer when a task is clocked-in."
   (secretaria-task-save-clocked-task)
   (setf secretaria-clocked-in-reminder-timer (run-at-time (format "%s min" (or secretaria-clocked-in-reminder-every-minutes 10)) (* (or secretaria-clocked-in-reminder-every-minutes 10) 60) 'secretaria-remind-task-clocked-in))
-  (alert (secretaria--org-to-html org-current-task)
+  (alert (secretaria--org-to-html org-clock-current-task)
          :title (format "Task clocked in! (%s)" (secretaria-task-clocked-time))
          :mode 'org-mode ))
 
@@ -278,8 +278,8 @@ the user)."
   "Stop reminding the clocked-in task."
   (secretaria--task-delete-save-clocked-task)
   (ignore-errors (cancel-timer secretaria-clocked-in-reminder-timer))
-  (when org-current-task
-    (alert (secretaria--org-to-html org-current-task)
+  (when org-clock-current-task
+    (alert (secretaria--org-to-html org-clock-current-task)
            :title (format "Task clocked out! (%s)" (secretaria-task-clocked-time))
            :severity 'high
            :mode 'org-mode)))
@@ -287,17 +287,17 @@ the user)."
 (defun secretaria-task-clocked-canceled ()
   "Stop reminding the clocked-in task if it's canceled."
   (cancel-timer secretaria-clocked-in-reminder-timer)
-  (when org-current-task
-    (alert (secretaria--org-to-html org-current-task)
+  (when org-clock-current-task
+    (alert (secretaria--org-to-html org-clock-current-task)
            :title (format "Task canceled! (%s)" (secretaria-task-clocked-time))
            :severity 'high
            :mode 'org-mode)))
 
 (defun secretaria-task-save-clocked-task ()
   "Save into a file the current clocked task."
-  (when org-current-task
+  (when org-clock-current-task
     (with-temp-file (expand-file-name secretaria-clocked-task-save-file)
-      (insert org-current-task))))
+      (insert org-clock-current-task))))
 
 (defun secretaria-task-load-clocked-task ()
   "Load the clocked task, if any.  And tell the user about it."
