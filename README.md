@@ -12,8 +12,7 @@ with org-mode.
 - Reminders
   - All tasks scheduled or that have a deadline set to "today" with an unspecified time of day.
   - The current clocked task, every N minutes (10 by default).
-  - In case of Emacs crashing, the task clocked in at the moment so you don't forget about fixing
-    that.
+  - The current clocked task is saved in a file, Secretaria will alert you of that task when Emacs is restarted from a crash.
 
 # How to use
 
