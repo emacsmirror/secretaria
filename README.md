@@ -1,4 +1,4 @@
-[![MELPA](http://melpa.milkbox.net/packages/secretaria-badge.svg)](http://melpa.milkbox.net/#/secretaria) [![pipeline status](https://gitlab.com/shackra/secretaria/badges/master/pipeline.svg)](https://gitlab.com/shackra/secretaria/commits/master)
+[![MELPA](http://melpa.milkbox.net/packages/secretaria-badge.svg)](http://melpa.milkbox.net/#/secretaria) [![pipeline status](https://gitlab.com/shackra/secretaria/badges/master/pipeline.svg)](https://gitlab.com/shackra/secretaria/commits/master) [![codecov](https://codecov.io/gl/shackra/secretaria/branch/master/graph/badge.svg)](https://codecov.io/gl/shackra/secretaria)
 
 # What's this?
 

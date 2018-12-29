@@ -6,7 +6,8 @@
 (development
  (depends-on "ert-runner")
  (depends-on "cask-package-toolset")
- (depends-on "el-mock"))
+ (depends-on "el-mock")
+ (depends-on "undercover"))
 
 (depends-on "alert" "1.2")
 (depends-on "s" "1.12")

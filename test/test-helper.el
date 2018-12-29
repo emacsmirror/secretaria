@@ -64,6 +64,8 @@ When UNSPECIFIED is non-nil the time stamp is return with out time of the day"
 (require 'el-mock)
 (eval-when-compile
   (require 'cl))
+(when (require 'undercover nil t)
+  (undercover "*.el" (:report-type :codecov)))
 (require 'secretaria)
 
 ;;; test-helper.el ends here
