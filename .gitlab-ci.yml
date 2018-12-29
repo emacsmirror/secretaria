@@ -9,4 +9,5 @@ testing:
     - cask version
     - cask install --dev
     - cask build
+    - cask clean-elc
     - cask exec ert-runner --debug
