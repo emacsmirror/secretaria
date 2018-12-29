@@ -1,7 +1,7 @@
 image: "registry.gitlab.com/joewreschnig/emacs-cask-docker-image:alpine-edge"
 
 before_script:
-  - apk update && apk add bash
+  - apk update && apk add bash curl
 
 testing:
   script:
@@ -11,3 +11,4 @@ testing:
     - cask build
     - cask clean-elc
     - cask exec ert-runner --debug
+    - bash <(curl -s https://codecov.io/bash) -f coverage-final.json
