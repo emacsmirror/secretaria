@@ -21,3 +21,22 @@
   "Should find appointments for today in unspecified time of day."
   (within-sandbox
    (should (equal (length (secretaria-get-appt 'unknown)) 3))))
+
+(ert-deftest secretaria-due-appts-fail ()
+  "Should fail because there are appointments."
+  (within-sandbox
+   (should-not (equal (length (secretaria-get-appt 'due)) 0))))
+
+(ert-deftest secretaria-unknown-time ()
+  "Should fail because there are appointments for today in unspecified time of day."
+  (within-sandbox
+   (should-not (equal (length (secretaria-get-appt 'unknown)) 0))))
+
+(ert-deftest secretaria-task-clocked-time ()
+  "Should return a string with the correct clocked time of a task"
+  (let ((org-clock-start-time (current-time))
+        (org-clock-total-time 73))
+    (should (equal (secretaria-task-clocked-time) "1:13/0:00"))))
+
+(provide 'secretaria-test)
+;;; secretaria-test.el ends here
