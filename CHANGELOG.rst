@@ -2,6 +2,18 @@ Changelog
 =========
 
 
+0.2.12 (2019-01-12)
+-------------------
+
+Changes
+~~~~~~~
+- Bump version. [Jorge Araya Navarro]
+
+Fix
+~~~
+- Require org-duration. [Jorge Araya Navarro]
+
+
 0.2.11 (2019-01-12)
 -------------------
 
