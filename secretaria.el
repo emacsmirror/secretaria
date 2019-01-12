@@ -228,16 +228,16 @@ the user)."
 (defun secretaria-task-clocked-time ()
   "Return a string with the clocked time and effort, if any."
   (interactive)
-  (let* ((clocked-time (org-get-clocked-time))
+  (let* ((clocked-time (org-clock-get-clocked-time))
          (h (floor clocked-time 60))
-         (m (- clocked-time (* 60 h)))
-         (work-done-str (org-minutes-to-clocksum-string m)))
-    (if org-effort
+         (m (- clocked-time (* h 60)))
+         (work-done-str (org-duration-from-minutes (+ (* h 60) m))))
+    (if org-clock-effort
         (let* ((effort-in-minutes
-                (org-duration-string-to-minutes org-effort))
+                (org-duration-to-minutes org-clock-effort))
                (effort-h (floor effort-in-minutes 60))
                (effort-m (- effort-in-minutes (* effort-h 60)))
-               (effort-str (org-minutes-to-clocksum-string effort-m)))
+               (effort-str (org-duration-from-minutes (+ (* effort-h 60) effort-m))))
           (format "%s/%s" work-done-str effort-str))
       (format "%s" work-done-str))))
 
