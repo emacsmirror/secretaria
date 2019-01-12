@@ -2,6 +2,102 @@ Changelog
 =========
 
 
+0.2.11 (2019-01-12)
+-------------------
+
+New
+~~~
+- Implement more unit tests. [Jorge Araya Navarro]
+- Set up codecov.io. [Jorge Araya Navarro]
+
+Changes
+~~~~~~~
+- Upload code coverage conditionally. [Jorge Araya Navarro]
+- Change text for alerts. [Jorge Araya Navarro]
+- Update dependency `f` version and bump package version. [Jorge Araya
+  Navarro]
+
+Fix
+~~~
+- Hook in with the correct hooks. [Jorge Araya Navarro]
+- Fix wrong math 🤦🏻🤦🏻 [Jorge Araya Navarro]
+- Fix wrong let expression usage 🤦🏻 [Jorge Araya Navarro]
+- Redirect output to bash command correctly. [Jorge Araya Navarro]
+
+  - https://gitlab.com/shackra/secretaria/-/jobs/139907169
+- Upload coverage information. [Jorge Araya Navarro]
+- Remove compiled .el files before running tests. [Jorge Araya Navarro]
+
+  This is for code coverage
+
+
+0.2.10 (2018-10-25)
+-------------------
+
+Fix
+~~~
+- Use real English in description of features. [Jorge Araya Navarro]
+
+
+0.2.9 (2018-10-12)
+------------------
+
+New
+~~~
+- Add GNU GPL 3 license. [Jorge Araya Navarro]
+
+Changes
+~~~~~~~
+- Refactor function definition. [Jorge Araya Navarro]
+- Add CI configuration. [Jorge Araya Navarro]
+- Convert org markup to plain text by default. [Jorge Araya Navarro]
+
+  Some notification displayers do not support HTML tags, others do. By default we deactivate the
+  conversion of the markup to HTML.
+
+  - https://people.gnome.org/%7Emccann/docs/notification-spec/notification-spec-latest.html
+  - https://github.com/mumble-voip/mumble/issues/2211#issuecomment-213798387
+
+Fix
+~~~
+- Reference correct variable name. [Jorge Araya Navarro]
+
+  - https://gitlab.com/shackra/secretaria/-/jobs/107360104
+- Fix readme file and comments on source code. [Jorge Araya Navarro]
+- Merge files into one and fix typo. [Jorge Araya Navarro]
+
+  - https://github.com/melpa/melpa/pull/5730#issuecomment-425614705
+- Update function calls on tests. [Jorge Araya Navarro]
+
+  Names were changed but test were left without update
+
+  - https://gitlab.com/shackra/secretaria/-/jobs/97502461
+- Fix issues reported by checkdoc. [Jorge Araya Navarro]
+- Fix almost all issues reported by package-lint. [Jorge Araya Navarro]
+- Include configuration file for ert-runner. [Jorge Araya Navarro]
+
+  This file tells ert-runner to put the current directory in the load-path enabling any feature
+  provided by the package under development.
+
+  - https://github.com/rejeep/ert-runner.el/issues/28#issuecomment-239625263
+- Install bash on docker image. [Jorge Araya Navarro]
+
+  ert-runner seems to need bash installed on the environment
+
+  - https://gitlab.com/shackra/secretaria/-/jobs/96450170
+- Add unit testing. [Jorge Araya Navarro]
+
+  Check for the health of the project and ensure the correct functioning of some key functions.
+
+
+0.2.8 (2018-01-04)
+------------------
+
+Changes
+~~~~~~~
+- Display links as HTML for alerts. [Jorge Araya Navarro]
+
+
 0.2.7 (2017-08-28)
 ------------------
 
