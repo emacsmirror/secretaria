@@ -70,6 +70,7 @@
 (require 'alert)
 (require 's)
 (require 'org-clock)
+(require 'org-duration)
 (require 'subr-x)
 (require 'f)
 (require 'org)
