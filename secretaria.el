@@ -320,9 +320,9 @@ the user)."
 (add-hook 'after-init-hook #'secretaria-alert-after-init)
 (add-hook 'after-init-hook #'secretaria-task-load-clocked-task)
 (add-hook 'after-save-hook #'secretaria-after-save-update-appt)
-(add-hook 'org-in-hook #'secretaria-task-clocked-in t)
-(add-hook 'org-out-hook #'secretaria-task-clocked-out t)
-(add-hook 'org-cancel-hook #'secretaria-task-clocked-canceled t)
+(add-hook 'org-clock-in-hook #'secretaria-task-clocked-in t)
+(add-hook 'org-clock-out-hook #'secretaria-task-clocked-out t)
+(add-hook 'org-clock-cancel-hook #'secretaria-task-clocked-canceled t)
 
 (when secretaria-notification-handler-overwrite
   (setf org-show-notification-handler 'secretaria-notification-handler))
