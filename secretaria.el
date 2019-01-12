@@ -248,20 +248,20 @@ the user)."
   (if (not (s-contains? "should be finished by now" notification))
       (alert notification :title "Secretaria: message from org-mode" :mode 'org-mode)
     (alert (secretaria--org-to-html org-clock-current-task)
-           :title (format "Task's estimate effort has been reach! (%s)" (secretaria-task-clocked-time))
+           :title (format "Task effort reached (%s)" (secretaria-task-clocked-time))
            :severity 'high
            :mode 'org-mode)))
 
 (defun secretaria-remind-task-clocked-in ()
   "Fires an alert for the user reminding him which task he is working on."
   (when org-clock-current-task
-    (if (not org-task-overrun)
+    (if (not org-clock-task-overrun)
         (alert (secretaria--org-to-html org-clock-current-task)
                :title "Currently clocked"
                :severity 'trivial
                :mode 'org-mode)
       (alert (secretaria--org-to-html org-clock-current-task)
-             :title (format "Task's estimated effort exceeded! (%s)" (secretaria-task-clocked-time))
+             :title (format "Task effort exceeded (%s)" (secretaria-task-clocked-time))
              :severity 'urgent
              :mode 'org-mode))))
 
@@ -270,7 +270,7 @@ the user)."
   (secretaria-task-save-clocked-task)
   (setf secretaria-clocked-in-reminder-timer (run-at-time (format "%s min" (or secretaria-clocked-in-reminder-every-minutes 10)) (* (or secretaria-clocked-in-reminder-every-minutes 10) 60) 'secretaria-remind-task-clocked-in))
   (alert (secretaria--org-to-html org-clock-current-task)
-         :title (format "Task clocked in! (%s)" (secretaria-task-clocked-time))
+         :title (format "Task clocked in (%s)" (secretaria-task-clocked-time))
          :mode 'org-mode ))
 
 (defun secretaria-task-clocked-out ()
