@@ -12,3 +12,4 @@
 (depends-on "alert" "1.2")
 (depends-on "s" "1.12")
 (depends-on "f" "0.20.0")
+(depends-on "org" "9")
