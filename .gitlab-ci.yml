@@ -6,7 +6,7 @@ testing-24.5:
     - cask version
     - cask install --dev
     - cask update
-    - cask eval '(message (concat "org: " (org-version)))'
+    - ./orgversion.sh
     - cask build
     - cask clean-elc
     - cask exec ert-runner --debug
@@ -19,7 +19,7 @@ testing-25.3:
     - cask version
     - cask install --dev
     - cask update
-    - cask eval '(message (concat "org: " (org-version)))'
+    - ./orgversion.sh
     - cask build
     - cask clean-elc
     - cask exec ert-runner --debug
@@ -32,7 +32,7 @@ testing-26.1:
     - cask version
     - cask install --dev
     - cask update
-    - cask eval '(message (concat "org: " (org-version)))'
+    - ./orgversion.sh
     - cask build
     - cask clean-elc
     - cask exec ert-runner --debug
@@ -45,7 +45,7 @@ testing-26.1-rc1:
     - cask version
     - cask install --dev
     - cask update
-    - cask eval '(message (concat "org: " (org-version)))'
+    - ./orgversion.sh
     - cask build
     - cask clean-elc
     - cask exec ert-runner --debug
