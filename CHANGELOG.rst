@@ -2,6 +2,29 @@ Changelog
 =========
 
 
+0.2.13 (2019-01-13)
+-------------------
+
+Changes
+~~~~~~~
+- Remove older emacs version from testing. [Jorge Araya Navarro]
+
+  I cannot update org-mode with Cask in order to have the most recent version of org-mode, thus, I
+  decided to remove them from the CI test. Instead is asummed that the user will have the most recent
+  version of org-mode before installing secretaria.el
+
+  - https://github.com/cask/cask/issues/119
+  - https://github.com/cask/cask/issues/169
+- Change gitlab-ci definition. [Jorge Araya Navarro]
+- Change docker image and add compatibility tests. [Jorge Araya Navarro]
+
+Fix
+~~~
+- Use script instead of passing a string as argument for command. [Jorge
+  Araya Navarro]
+- Include org as a dependency. [Jorge Araya Navarro]
+
+
 0.2.12 (2019-01-12)
 -------------------
 
