@@ -24,4 +24,5 @@ testing-26.1-rc1:
     - cask clean-elc
     - cask exec ert-runner --debug
   after_script:
+    - apt-get update && apt-get install curl
     - ./coverage.sh
