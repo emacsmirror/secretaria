@@ -1,8 +1,39 @@
-image: "registry.gitlab.com/joewreschnig/emacs-cask-docker-image:alpine-edge"
-
-before_script:
-  - apk update && apk add bash curl
-
-testing:
+testing-24.5:
+  image: "flycheck/emacs-cask:24.5"
   script:
-    - ./runtests.sh
+    - emacs --version
+    - cask version
+    - cask install --dev
+    - cask build
+    - cask clean-elc
+    - cask exec ert-runner --debug
+
+testing-25.3:
+  image: "flycheck/emacs-cask:25.3"
+  script:
+    - emacs --version
+    - cask version
+    - cask install --dev
+    - cask build
+    - cask clean-elc
+    - cask exec ert-runner --debug
+
+testing-26.1:
+  image: "flycheck/emacs-cask:26.1"
+  script:
+    - emacs --version
+    - cask version
+    - cask install --dev
+    - cask build
+    - cask clean-elc
+    - cask exec ert-runner --debug
+
+testing-26.1-rc1:
+  image: "flycheck/emacs-cask:26.1-rc1"
+  script:
+    - emacs --version
+    - cask version
+    - cask install --dev
+    - cask build
+    - cask clean-elc
+    - cask exec ert-runner --debug
