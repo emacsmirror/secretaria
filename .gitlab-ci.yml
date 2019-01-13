@@ -1,29 +1,3 @@
-testing-24.5:
-  image: "flycheck/emacs-cask:24.5"
-  stage: test
-  script:
-    - emacs --version
-    - cask version
-    - cask install --dev
-    - cask update
-    - ./orgversion.sh
-    - cask build
-    - cask clean-elc
-    - cask exec ert-runner --debug
-
-testing-25.3:
-  image: "flycheck/emacs-cask:25.3"
-  stage: test
-  script:
-    - emacs --version
-    - cask version
-    - cask install --dev
-    - cask update
-    - ./orgversion.sh
-    - cask build
-    - cask clean-elc
-    - cask exec ert-runner --debug
-
 testing-26.1:
   image: "flycheck/emacs-cask:26.1"
   stage: test
