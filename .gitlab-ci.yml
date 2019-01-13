@@ -14,6 +14,8 @@ testing-26.1:
 testing-26.1-rc1:
   image: "flycheck/emacs-cask:26.1-rc1"
   stage: test
+  variables:
+    UNDERCOVER_FORCE: "true"
   script:
     - emacs --version
     - cask version
