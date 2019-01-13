@@ -1,4 +1,5 @@
 (source melpa)
+(source org)
 
 (package-file "secretaria.el")
 (files "secretaria*")
