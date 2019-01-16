@@ -146,10 +146,11 @@ match tasks scheduled or with deadline for today"
 (defun secretaria-alert-due-appt ()
   "Tell the user about due TODOs tasks."
   (let ((due (length (secretaria-get-appt 'due))))
-    (alert (format "Due entries: %s" due)
-           :title "Attention, boss!"
-           :severity 'high
-           :mode 'org-mode)))
+    (when (> due 0)
+      (alert (format "Due entries: %s" due)
+             :title "Attention, boss!"
+             :severity 'high
+             :mode 'org-mode))))
 
 (defun secretaria-alert-unknown-time-appt ()
   "Tell the user about tasks scheduled for today.
