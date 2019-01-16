@@ -2,6 +2,20 @@ Changelog
 =========
 
 
+0.2.14 (2019-01-16)
+-------------------
+
+Changes
+~~~~~~~
+- Force undercover execution. [Jorge Araya Navarro]
+
+Fix
+~~~
+- Alert user for due appts when they exists. [Jorge Araya Navarro]
+- Don't forget to answer "yes" automatically. [Jorge Araya Navarro]
+- Install curl. [Jorge Araya Navarro]
+
+
 0.2.13 (2019-01-13)
 -------------------
 
