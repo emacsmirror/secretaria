@@ -119,7 +119,7 @@
 
 (defun secretaria--skip-entry-if-done ()
   "Skip `org-mode' entries if they are DONE."
-  (org-agenda-skip-entry-if 'done))
+  (org-agenda-skip-entry-if 'todo 'done))
 
 (defun secretaria--conditional-severity ()
   "Return a severity level for Alert if Emacs is ran as a daemon."
